@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Room Call — NYC Listing Type Predictor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="grid-backdrop" aria-hidden="true"></div>
+
+<header class="site-header">
+  <div class="wordmark">
+    <span class="wordmark-mark">RC</span>
+    <div class="wordmark-text">
+      <span class="wordmark-title">Room Call</span>
+      <span class="wordmark-sub">NYC listing type predictor</span>
+    </div>
+  </div>
+  <div class="api-status" id="apiStatus" data-state="checking">
+    <span class="api-dot" aria-hidden="true"></span>
+    <span class="api-label">Checking API…</span>
+  </div>
+</header>
+
+<main class="layout">
+
+  <section class="panel form-panel" aria-labelledby="formHeading">
+    <div class="panel-head">
+      <h1 id="formHeading">Describe the listing</h1>
+      <p class="panel-hint">Fill in the details below the way you'd fill out a listing. The model reads them and calls the room type.</p>
+    </div>
+
+    <form id="predictForm" novalidate>
+
+      <fieldset class="field-group">
+        <legend>Borough</legend>
+        <div class="borough-chips" id="boroughChips">
+          <!-- injected by script.js -->
+        </div>
+      </fieldset>
+
+      <div class="field">
+        <label for="neighbourhood">Neighbourhood</label>
+        <input type="text" id="neighbourhood" name="neighbourhood" list="neighbourhoodList" placeholder="Start typing a neighbourhood…" autocomplete="off" required>
+        <datalist id="neighbourhoodList"></datalist>
+        <span class="field-error" id="err-neighbourhood"></span>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="latitude">Latitude</label>
+          <input type="number" id="latitude" name="latitude" step="0.000001" min="-90" max="90" placeholder="40.7128" required>
+        </div>
+        <div class="field">
+          <label for="longitude">Longitude</label>
+          <input type="number" id="longitude" name="longitude" step="0.000001" min="-180" max="180" placeholder="-74.0060" required>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="price">Price <span class="unit">per night, $</span></label>
+          <input type="number" id="price" name="price" min="1" step="1" placeholder="150" required>
+        </div>
+        <div class="field">
+          <label for="minimum_nights">Minimum nights</label>
+          <input type="number" id="minimum_nights" name="minimum_nights" min="1" max="365" step="1" placeholder="3" required>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="number_of_reviews">Total reviews</label>
+          <input type="number" id="number_of_reviews" name="number_of_reviews" min="0" step="1" placeholder="24" required>
+        </div>
+        <div class="field">
+          <label for="reviews_per_month">Reviews / month</label>
+          <input type="number" id="reviews_per_month" name="reviews_per_month" min="0" step="0.01" placeholder="1.2" required>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="calculated_host_listings_count">Host's other listings</label>
+          <input type="number" id="calculated_host_listings_count" name="calculated_host_listings_count" min="0" step="1" placeholder="2" required>
+        </div>
+        <div class="field">
+          <label for="availability_365">Days available <span class="unit">/ 365</span></label>
+          <input type="range" id="availability_365" name="availability_365" min="0" max="365" step="1" value="180" required>
+          <output for="availability_365" id="availabilityOut">180</output>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-ghost" id="fillExample">Use an example listing</button>
+        <button type="submit" class="btn-primary" id="submitBtn">
+          <span class="btn-label">Call it</span>
+        </button>
+      </div>
+
+      <p class="form-error" id="formError" role="alert"></p>
+    </form>
+  </section>
+
+  <section class="panel result-panel" aria-labelledby="resultHeading">
+    <div class="tag-card" id="tagCard" data-state="empty">
+
+      <div class="tag-hole" aria-hidden="true"></div>
+
+      <div class="tag-empty" id="tagEmpty">
+        <p class="tag-empty-title">Awaiting details</p>
+        <p class="tag-empty-sub">Fill in the listing on the left, then call it, and the predicted room type shows up here.</p>
+      </div>
+
+      <div class="tag-content" id="tagContent">
+        <p class="tag-eyebrow" id="resultHeading">Predicted room type</p>
+        <h2 class="tag-result" id="resultType">—</h2>
+        <p class="tag-location" id="resultLocation"></p>
+
+        <div class="tag-bars" id="tagBars">
+          <!-- injected by script.js -->
+        </div>
+      </div>
+
+    </div>
+
+    <p class="panel-footnote">Model runs locally in your FastAPI service — nothing here leaves your machine.</p>
+  </section>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
