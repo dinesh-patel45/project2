@@ -3,7 +3,7 @@
 // ============================================================
 // When deployed on Vercel, replace the production URL with your Render backend URL.
 const isLocal = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
-const API_BASE = isLocal ? "http://127.0.0.1:8000" : "https://your-render-backend-url.onrender.com";
+const API_BASE = isLocal ? "http://127.0.0.1:8000" : "https://project2-ma18.onrender.com";
 
 // (sklearn sorts classes_ alphabetically: Entire home/apt, Private room, Shared room)
 const ROOM_TYPES = ["Entire home/apt", "Private room", "Shared room"];
